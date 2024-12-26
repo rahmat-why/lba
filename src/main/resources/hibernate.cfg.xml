@@ -1,0 +1,20 @@
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">jdbc:sqlserver://DESKTOP-M1TAU7S:1433;databaseName=devlba;encrypt=true;trustServerCertificate=true</property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">polman</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServer2012Dialect</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstcusts"/>
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstproducts"/>
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstwrhses"/>
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpTxnstckprds"/>
+    </session-factory>
+</hibernate-configuration>
