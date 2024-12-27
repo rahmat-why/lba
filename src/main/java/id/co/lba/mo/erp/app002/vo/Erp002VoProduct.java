@@ -8,6 +8,7 @@ public class Erp002VoProduct {
     private String unit;
     private String priceBuy;
     private String priceUnitDelivery;
+    private String priceUnitPrice;
 
     public String getProductId() {
         return productId;
@@ -63,5 +64,13 @@ public class Erp002VoProduct {
 
     public void setPriceUnitDelivery(String priceUnitDelivery) {
         this.priceUnitDelivery = priceUnitDelivery;
+    }
+
+    public String getPriceUnitPrice() {
+        return priceUnitPrice;
+    }
+
+    public void setPriceUnitPrice(String priceUnitPrice) {
+        this.priceUnitPrice = priceUnitPrice;
     }
 }

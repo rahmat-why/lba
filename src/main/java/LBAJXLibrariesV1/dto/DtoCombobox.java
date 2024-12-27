@@ -16,6 +16,8 @@ public class DtoCombobox {
         this.helper = helper;
     }
 
+    public DtoCombobox() {}
+
     public String getValue() {
         return value;
     }

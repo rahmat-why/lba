@@ -14,12 +14,13 @@ public class LbamoerpMstcusts {
     private String vEmail;
     private String vWebsite;
     private String vSector;
-    private LocalDate dBegineff;
-    private LocalDate dEndeff;
     private String vCrea;
     private LocalDateTime dCrea;
     private String vModi;
     private LocalDateTime dModi;
+    private String vPhone1;
+    private String vPhone2;
+    private String vStatus;
 
     public String getvCstid() {
         return vCstid;
@@ -61,22 +62,6 @@ public class LbamoerpMstcusts {
         this.vSector = vSector;
     }
 
-    public LocalDate getdBegineff() {
-        return dBegineff;
-    }
-
-    public void setdBegineff(LocalDate dBegineff) {
-        this.dBegineff = dBegineff;
-    }
-
-    public LocalDate getdEndeff() {
-        return dEndeff;
-    }
-
-    public void setdEndeff(LocalDate dEndeff) {
-        this.dEndeff = dEndeff;
-    }
-
     public String getvCrea() {
         return vCrea;
     }
@@ -107,5 +92,29 @@ public class LbamoerpMstcusts {
 
     public void setdModi(LocalDateTime dModi) {
         this.dModi = dModi;
+    }
+
+    public String getvPhone1() {
+        return vPhone1;
+    }
+
+    public void setvPhone1(String vPhone1) {
+        this.vPhone1 = vPhone1;
+    }
+
+    public String getvPhone2() {
+        return vPhone2;
+    }
+
+    public void setvPhone2(String vPhone2) {
+        this.vPhone2 = vPhone2;
+    }
+
+    public String getvStatus() {
+        return vStatus;
+    }
+
+    public void setvStatus(String vStatus) {
+        this.vStatus = vStatus;
     }
 }

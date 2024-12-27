@@ -9,7 +9,7 @@ public class LbamoerpMstproducts {
 
     @Id
     @Column(name = "VPRDID")
-    private String vPrdid;
+    private String vPrdId;
 
     @Column(name = "VNAME")
     private String vName;
@@ -41,12 +41,18 @@ public class LbamoerpMstproducts {
     @Column(name = "DMODI")
     private LocalDateTime dModi;
 
-    public String getvPrdid() {
-        return vPrdid;
+    @Column(name = "VSTATUS")
+    private String vStatus;
+
+    @Column(name = "NPRUNTPIC")
+    private Integer nPruntpic;
+
+    public String getvPrdId() {
+        return vPrdId;
     }
 
-    public void setvPrdid(String vPrdid) {
-        this.vPrdid = vPrdid;
+    public void setvPrdId(String vPrdId) {
+        this.vPrdId = vPrdId;
     }
 
     public String getvName() {
@@ -127,5 +133,21 @@ public class LbamoerpMstproducts {
 
     public void setdModi(LocalDateTime dModi) {
         this.dModi = dModi;
+    }
+
+    public String getvStatus() {
+        return vStatus;
+    }
+
+    public void setvStatus(String vStatus) {
+        this.vStatus = vStatus;
+    }
+
+    public Integer getnPruntpic() {
+        return nPruntpic;
+    }
+
+    public void setnPruntpic(Integer nPruntpic) {
+        this.nPruntpic = nPruntpic;
     }
 }

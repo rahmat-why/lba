@@ -12,16 +12,22 @@ public class LbamoerpTxnstckprds {
 
     @Id
     @Column(name = "VSTCPRDID")
-    private String vStcprdid;
+    private String vStcprdId;
+
+    @Column(name = "VPRDID")
+    private String vPrdId;
 
     @Column(name = "VWRHSID")
-    private String vWrhsid;
+    private String vWrhsId;
 
     @Column(name = "NQTY")
     private Integer nQty;
 
     @Column(name = "NTPYMNTS")
     private Integer nTpyments;
+
+    @Column(name = "NPRICE")
+    private Integer nPrice;
 
     @Column(name = "DPYMNTDT")
     private LocalDate dPaymentDate;
@@ -41,21 +47,28 @@ public class LbamoerpTxnstckprds {
     @Column(name = "DMODI")
     private LocalDateTime dModi;
 
-    // Getter dan Setter
-    public String getvStcprdid() {
-        return vStcprdid;
+    public String getvStcprdId() {
+        return vStcprdId;
     }
 
-    public void setvStcprdid(String vStcprdid) {
-        this.vStcprdid = vStcprdid;
+    public void setvStcprdId(String vStcprdId) {
+        this.vStcprdId = vStcprdId;
     }
 
-    public String getvWrhsid() {
-        return vWrhsid;
+    public String getvPrdId() {
+        return vPrdId;
     }
 
-    public void setvWrhsid(String vWrhsid) {
-        this.vWrhsid = vWrhsid;
+    public void setvPrdId(String vPrdId) {
+        this.vPrdId = vPrdId;
+    }
+
+    public String getvWrhsId() {
+        return vWrhsId;
+    }
+
+    public void setvWrhsId(String vWrhsId) {
+        this.vWrhsId = vWrhsId;
     }
 
     public Integer getnQty() {
@@ -76,6 +89,14 @@ public class LbamoerpTxnstckprds {
 
     public LocalDate getdPaymentDate() {
         return dPaymentDate;
+    }
+
+    public Integer getnPrice() {
+        return nPrice;
+    }
+
+    public void setnPrice(Integer nPrice) {
+        this.nPrice = nPrice;
     }
 
     public void setdPaymentDate(LocalDate dPaymentDate) {

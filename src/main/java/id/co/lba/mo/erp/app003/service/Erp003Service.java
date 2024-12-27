@@ -4,12 +4,14 @@ import LBAJXLibrariesV1.dto.DtoParameter;
 import LBAJXLibrariesV1.dto.DtoResponse;
 import id.co.lba.Hibernate;
 import id.co.lba.mo.erp.app000.model.LbamoerpMstwrhses;
+import id.co.lba.mo.erp.app002.dao.Erp002ObjectDao;
 import id.co.lba.mo.erp.app003.dao.Erp003ObjectDao;
 import id.co.lba.mo.erp.app003.vo.Erp003VoWarehouse;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,8 @@ public class Erp003Service {
             warehouse.setvWrhsid((String) search.get("vWrhsId"));
             warehouse.setvName((String) search.get("vName"));
             warehouse.setvAddress((String) search.get("vAddress"));
-//            warehouse.setnCapacity((Integer) search.get("nCapacity"));
+            warehouse.setnCapacity((Integer) search.get("nCapacity"));
+            warehouse.setvStatus("ACTIVE");
             warehouse.setvCrea("NEW");
             warehouse.setdCrea(LocalDateTime.now());
             session.save(warehouse);
@@ -52,7 +55,8 @@ public class Erp003Service {
             Map<String, Object> search = param.getSearch();
             LbamoerpMstwrhses warehouse = session.get(LbamoerpMstwrhses.class, search.get("vWrhsId"));
             if (warehouse != null) {
-                session.delete(warehouse);
+                warehouse.setvStatus("INACTIVE");
+                session.update(warehouse);
             }
             transaction.commit();
             return new DtoResponse("200", null, "Data successfully deleted");
@@ -74,7 +78,7 @@ public class Erp003Service {
             if (warehouse != null) {
                 warehouse.setvName((String) search.get("vName"));
                 warehouse.setvAddress((String) search.get("vAddress"));
-//                warehouse.setnCapacity((Integer) search.get("nCapacity"));
+                warehouse.setnCapacity((Integer) search.get("nCapacity"));
                 session.update(warehouse);
             }
             transaction.commit();
@@ -86,5 +90,10 @@ public class Erp003Service {
             e.printStackTrace();
             return new DtoResponse("500", null, "Failed to update data: " + e.getMessage());
         }
+    }
+
+    public static DtoResponse getLastWarehouseId(DtoParameter param) throws SQLException {
+        String warehouseId = Erp003ObjectDao.getLastWarehouseId(param);
+        return new DtoResponse("200", Collections.singletonList(warehouseId), "Data successfully received");
     }
 }

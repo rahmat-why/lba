@@ -1,6 +1,7 @@
 package id.co.lba.mo.erp.app001.dao;
 
 import LBAJXLibrariesV1.connection.DBConnect;
+import LBAJXLibrariesV1.dto.DtoCombobox;
 import LBAJXLibrariesV1.dto.DtoParameter;
 import id.co.lba.mo.erp.app001.constant.Erp001Constant;
 import id.co.lba.mo.erp.app001.vo.Erp001VoCustomer;
@@ -30,16 +31,63 @@ public class Erp001ObjectDao {
                     customer.setEmail(resultSet.getString("VEMAIL"));
                     customer.setWebsite(resultSet.getString("VWEBSITE"));
                     customer.setSector(resultSet.getString("VSECTOR"));
-                    customer.setBeginEffective(resultSet.getString("DBEGINEFF"));
-                    customer.setEndEffective(resultSet.getString("DENDEFF"));
+                    customer.setPhone1(resultSet.getString("VPHONE1"));
+                    customer.setPhone2(resultSet.getString("VPHONE2"));
+                    customer.setStatus(resultSet.getString("VSTATUS"));
                     customerList.add(customer);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw e; // Re-throw the exception for proper error handling
+            throw e;
         }
 
         return customerList;
+    }
+
+    public static String getLastCustomerId(DtoParameter dto) throws SQLException {
+        String query = Erp001Constant.GET_LAST_CUSTOMER_ID;
+
+        try (PreparedStatement pstat = connection.conn.prepareStatement(query)) {
+            try (ResultSet resultSet = pstat.executeQuery()) {
+                String lastId = null;
+                if (resultSet.next()) {
+                    lastId = resultSet.getString("VCSTID");
+                }
+
+                if (lastId == null) {
+                    return "LBA-000001";
+                } else {
+                    String numericPart = lastId.substring(lastId.indexOf('-') + 1);
+                    int nextNumber = Integer.parseInt(numericPart) + 1;
+                    return String.format("LBA-%06d", nextNumber);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    public static List<DtoCombobox> getComboboxSector(DtoParameter dto) throws SQLException {
+        List<DtoCombobox> comboboxSectorList = new ArrayList<>();
+        String query = Erp001Constant.GET_COMBOBOX_SECTOR;
+
+        try (PreparedStatement pstat = connection.conn.prepareStatement(query)) {
+            try (ResultSet resultSet = pstat.executeQuery()) {
+                while (resultSet.next()) {
+                    DtoCombobox sector = new DtoCombobox();
+                    sector.setValue(resultSet.getString("VKEY"));
+                    sector.setDisplay(resultSet.getString("VVALUE"));
+                    sector.setHelper(resultSet.getString("VHELPER"));
+                    comboboxSectorList.add(sector);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
+
+        return comboboxSectorList;
     }
 }

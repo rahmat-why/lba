@@ -16,7 +16,7 @@ public class LbaApplication {
 		EventQueue.invokeLater(() -> {
             JFrame frame = null;
             try {
-                frame = new Erp004View();
+                frame = new Erp003View();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

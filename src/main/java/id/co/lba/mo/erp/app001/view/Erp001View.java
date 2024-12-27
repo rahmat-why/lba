@@ -40,12 +40,9 @@ public class Erp001View extends JFrame{
     private JButton erp001p01BtnDelete;
     private JButton erp001p01BtnSave;
     private JButton erp001p01BtnClear;
-    private JPanel erp001p01JpnBeginEff;
-    private JPanel erp001p01JpnEndEff;
     private JButton erp001p01BtnUpdate;
-
-    JDateChooser erp001JdcBeginEff = new JDateChooser();
-    JDateChooser erp001JdcEndEff = new JDateChooser();
+    private JTextField erp001p01TxtPhone1;
+    private JTextField erp001p01TxtPhone2;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -60,15 +57,11 @@ public class Erp001View extends JFrame{
 
     public Erp001View() throws SQLException {
         erp001Initialize();
-
+        erp001Default();
         erp001AddColumn();
         erp001p01GetCustomer();
-
-        erp001p01JpnBeginEff.add(erp001JdcBeginEff);
-        erp001p01JpnEndEff.add(erp001JdcEndEff);
-
-        erp001p01CmbSector.addItem(new DtoCombobox("MOERP001", "MANUFACTURE", "1"));
-        erp001p01CmbSector.addItem(new DtoCombobox("MOERP002", "RETAIL", "2"));
+        erp001p01GetCustomerId();
+        erp001p01GetComboboxSector();
 
         erp001p01BtnSave.addActionListener(new ActionListener() {
             @Override
@@ -77,7 +70,11 @@ public class Erp001View extends JFrame{
                 "Confirmation", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    erp001p01SaveCustomer();
+                    try {
+                        erp001p01SaveCustomer();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -92,58 +89,49 @@ public class Erp001View extends JFrame{
 
                 erp001p01TxtIdCustomer.setText((String) erp001p01TableModel.getValueAt(selectedRow, 0));
                 erp001p01TxtName.setText((String) erp001p01TableModel.getValueAt(selectedRow, 1));
-                erp001p01TxtEmail.setText((String) erp001p01TableModel.getValueAt(selectedRow, 2));
-                erp001p01TxtWebsite.setText((String) erp001p01TableModel.getValueAt(selectedRow, 3));
+                erp001p01TxtPhone1.setText((String) erp001p01TableModel.getValueAt(selectedRow, 2));
+                erp001p01TxtPhone2.setText((String) erp001p01TableModel.getValueAt(selectedRow, 3));
+                erp001p01TxtEmail.setText((String) erp001p01TableModel.getValueAt(selectedRow, 4));
+                erp001p01TxtWebsite.setText((String) erp001p01TableModel.getValueAt(selectedRow, 5));
 
                 for (int x = 0; x < erp001p01CmbSector.getItemCount(); x++) {
                     Object item = erp001p01CmbSector.getItemAt(x);
-                    if (((DtoCombobox) item).getDisplay().equals((String) erp001p01TableModel.getValueAt(selectedRow, 4))) {
+                    if (((DtoCombobox) item).getDisplay().equals((String) erp001p01TableModel.getValueAt(selectedRow, 6))) {
                         erp001p01CmbSector.setSelectedItem(item);
                         break;
                     }
                 }
 
-                try {
-                    Date beginEff = Util.UTL_DATESTRING_FORMATTER.parse(erp001p01TableModel.getValueAt(selectedRow, 5).toString());
-                    erp001JdcBeginEff.setDate(beginEff);
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
-
-                try {
-                    Date endEff = Util.UTL_DATESTRING_FORMATTER.parse(erp001p01TableModel.getValueAt(selectedRow, 6).toString());
-                    erp001JdcEndEff.setDate(endEff);
-                } catch (ParseException ex) {
-                    throw new RuntimeException(ex);
-                }
+                erp001p01BtnSave.setEnabled(false);
+                erp001p01BtnUpdate.setEnabled(true);
+                erp001p01BtnDelete.setEnabled(true);
             }
         });
 
         erp001p01BtnClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp001p01TxtName.setText("");
-                erp001p01TxtEmail.setText("");
-                erp001p01TxtWebsite.setText("");
-
-                if (erp001p01CmbSector.getItemCount() > 0) {
-                    erp001p01CmbSector.setSelectedIndex(0);
-                }
-
-                erp001JdcBeginEff.setDate(null);
-                erp001JdcEndEff.setDate(null);
+                erp001p01Clear();
             }
         });
         erp001p01BtnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp001p01DeleteCustomer();
+                try {
+                    erp001p01DeleteCustomer();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         erp001p01BtnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp001p01UpdateCustomer();
+                try {
+                    erp001p01UpdateCustomer();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         erp001p01BtnFilter.addActionListener(new ActionListener() {
@@ -175,43 +163,17 @@ public class Erp001View extends JFrame{
             Object[] obj = new Object[7];
             obj[0] = customer.getCustomerId();
             obj[1] = customer.getName();
-            obj[2] = customer.getEmail();
-            obj[3] = customer.getWebsite();
-            obj[4] = customer.getSector();
-            obj[5] = customer.getBeginEffective();
-            obj[6] = customer.getEndEffective();
+            obj[2] = customer.getPhone1();
+            obj[3] = customer.getPhone2();
+            obj[4] = customer.getEmail();
+            obj[5] = customer.getWebsite();
+            obj[6] = customer.getSector();
             erp001p01TableModel.addRow(obj);
         }
         erp001p01TblCustomer.setModel(erp001p01TableModel);
     }
 
-    private void erp001p01SaveCustomer() {
-        DtoParameter param = new DtoParameter();
-
-        Map<String, Object> searchMap = new HashMap<>();
-
-        searchMap.put("vCstId", "RHMT3");
-        searchMap.put("vName", erp001p01TxtName.getText());
-        searchMap.put("vEmail", erp001p01TxtEmail.getText());
-        searchMap.put("vWebsite", erp001p01TxtWebsite.getText());
-
-        DtoCombobox selectedSector = (DtoCombobox) erp001p01CmbSector.getSelectedItem();
-        searchMap.put("vSector", selectedSector.getDisplay());
-
-        Date erp001p01DateBeginEff = erp001JdcBeginEff.getDate();
-        LocalDate beginDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(erp001p01DateBeginEff), Util.UTL_DATETIME_FORMATTER);
-        searchMap.put("dBeginEff", beginDate);
-
-        Date erp001p01DateEndEff = erp001JdcEndEff.getDate();
-        LocalDate endDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(erp001p01DateEndEff), Util.UTL_DATETIME_FORMATTER);
-        searchMap.put("dEndEff", endDate);
-
-        param.setSearch(searchMap);
-
-        Erp001Service.saveDataCustomer(param);
-    }
-
-    private void erp001p01UpdateCustomer() {
+    private void erp001p01SaveCustomer() throws SQLException {
         DtoParameter param = new DtoParameter();
 
         Map<String, Object> searchMap = new HashMap<>();
@@ -224,20 +186,44 @@ public class Erp001View extends JFrame{
         DtoCombobox selectedSector = (DtoCombobox) erp001p01CmbSector.getSelectedItem();
         searchMap.put("vSector", selectedSector.getDisplay());
 
-        Date erp001p01DateBeginEff = erp001JdcBeginEff.getDate();
-        LocalDate beginDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(erp001p01DateBeginEff), Util.UTL_DATETIME_FORMATTER);
-        searchMap.put("dBeginEff", beginDate);
+        searchMap.put("vPhone1", erp001p01TxtPhone1.getText());
+        searchMap.put("vPhone2", erp001p01TxtPhone2.getText());
 
-        Date erp001p01DateEndEff = erp001JdcEndEff.getDate();
-        LocalDate endDate = LocalDate.parse(new SimpleDateFormat("yyyy-MM-dd").format(erp001p01DateEndEff), Util.UTL_DATETIME_FORMATTER);
-        searchMap.put("dEndEff", endDate);
+        param.setSearch(searchMap);
+
+        Erp001Service.saveDataCustomer(param);
+
+        erp001p01Search();
+
+        erp001p01Clear();
+    }
+
+    private void erp001p01UpdateCustomer() throws SQLException {
+        DtoParameter param = new DtoParameter();
+
+        Map<String, Object> searchMap = new HashMap<>();
+
+        searchMap.put("vCstId", erp001p01TxtIdCustomer.getText());
+        searchMap.put("vName", erp001p01TxtName.getText());
+        searchMap.put("vEmail", erp001p01TxtEmail.getText());
+        searchMap.put("vWebsite", erp001p01TxtWebsite.getText());
+
+        DtoCombobox selectedSector = (DtoCombobox) erp001p01CmbSector.getSelectedItem();
+        searchMap.put("vSector", selectedSector.getDisplay());
+
+        searchMap.put("vPhone1", erp001p01TxtPhone1.getText());
+        searchMap.put("vPhone2", erp001p01TxtPhone2.getText());
 
         param.setSearch(searchMap);
 
         Erp001Service.updateDataCustomer(param);
+
+        erp001p01Search();
+
+        erp001p01Clear();
     }
 
-    private void erp001p01DeleteCustomer() {
+    private void erp001p01DeleteCustomer() throws SQLException {
         DtoParameter param = new DtoParameter();
 
         Map<String, Object> searchMap = new HashMap<>();
@@ -247,6 +233,10 @@ public class Erp001View extends JFrame{
         param.setSearch(searchMap);
 
         Erp001Service.deleteDataCustomer(param);
+
+        erp001p01Search();
+
+        erp001p01Clear();
     }
 
     private void erp001p01Search() throws SQLException {
@@ -268,11 +258,11 @@ public class Erp001View extends JFrame{
             Object[] obj = new Object[7];
             obj[0] = customer.getCustomerId();
             obj[1] = customer.getName();
-            obj[2] = customer.getEmail();
-            obj[3] = customer.getWebsite();
-            obj[4] = customer.getSector();
-            obj[5] = customer.getBeginEffective();
-            obj[6] = customer.getEndEffective();
+            obj[2] = customer.getPhone1();
+            obj[3] = customer.getPhone2();
+            obj[4] = customer.getEmail();
+            obj[5] = customer.getWebsite();
+            obj[6] = customer.getSector();
             erp001p01TableModel.addRow(obj);
         }
         erp001p01TblCustomer.setModel(erp001p01TableModel);
@@ -283,10 +273,49 @@ public class Erp001View extends JFrame{
 
         erp001p01TableModel.addColumn("Customer ID");
         erp001p01TableModel.addColumn("Name");
+        erp001p01TableModel.addColumn("Phone 1");
+        erp001p01TableModel.addColumn("Phone 2");
         erp001p01TableModel.addColumn("Email");
         erp001p01TableModel.addColumn("Website");
         erp001p01TableModel.addColumn("Sector");
-        erp001p01TableModel.addColumn("Begin Effective");
-        erp001p01TableModel.addColumn("End Effective");
+    }
+
+    private void erp001p01GetCustomerId() throws SQLException {
+        DtoResponse response = Erp001Service.getLastCustomerId(new DtoParameter());
+        String lastId = (String) response.getData().get(0);
+        erp001p01TxtIdCustomer.setText(lastId);
+    }
+
+    private void erp001p01GetComboboxSector() throws SQLException {
+        DtoResponse response = Erp001Service.getComboboxSector(new DtoParameter());
+        List<DtoCombobox> comboboxSectorList = response.getData();
+        for (int i = 0; i < comboboxSectorList.size(); i++) {
+            DtoCombobox comboboxSector = comboboxSectorList.get(i);
+            erp001p01CmbSector.addItem(new DtoCombobox(comboboxSector.getValue(), comboboxSector.getDisplay(), comboboxSector.getHelper()));
+        }
+    }
+
+    private void erp001p01Clear() {
+        erp001p01TxtName.setText("");
+        erp001p01TxtPhone1.setText("");
+        erp001p01TxtPhone2.setText("");
+        erp001p01TxtEmail.setText("");
+        erp001p01TxtWebsite.setText("");
+        erp001p01CmbSector.setSelectedIndex(0);
+
+        try {
+            erp001p01GetCustomerId();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        erp001p01BtnSave.setEnabled(true);
+        erp001p01BtnUpdate.setEnabled(false);
+        erp001p01BtnDelete.setEnabled(false);
+    }
+
+    private void erp001Default() {
+        erp001p01BtnUpdate.setEnabled(false);
+        erp001p01BtnDelete.setEnabled(false);
     }
 }

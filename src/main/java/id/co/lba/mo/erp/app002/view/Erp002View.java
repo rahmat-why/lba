@@ -1,12 +1,8 @@
 package id.co.lba.mo.erp.app002.view;
 
-import LBAJXLibrariesV1.constant.Util;
 import LBAJXLibrariesV1.dto.DtoCombobox;
 import LBAJXLibrariesV1.dto.DtoParameter;
 import LBAJXLibrariesV1.dto.DtoResponse;
-import id.co.lba.mo.erp.app001.service.Erp001Service;
-import id.co.lba.mo.erp.app001.view.Erp001View;
-import id.co.lba.mo.erp.app001.vo.Erp001VoCustomer;
 import id.co.lba.mo.erp.app002.service.Erp002Service;
 import id.co.lba.mo.erp.app002.vo.Erp002VoProduct;
 
@@ -18,9 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +34,7 @@ public class Erp002View extends JFrame{
     private JComboBox erp002p01CmbUnit;
     private JTextField erp002p01TxtPriceBuy;
     private JTextField erp002p01TxtPriceUnitDelivery;
+    private JTextField erp002p01TxtPriceUnitPickup;
     private DefaultTableModel erp002p01TableModel;
 
     public static void main(String[] args) {
@@ -56,25 +50,16 @@ public class Erp002View extends JFrame{
 
     public Erp002View() throws SQLException {
         erp002Initialize();
+        erp002Default();
         erp002AddColumn();
         erp002p01GetProduct();
-
-        erp002p01CmbUnit.addItem(new DtoCombobox("MOERP001", "KG", "1"));
-        erp002p01CmbUnit.addItem(new DtoCombobox("MOERP002", "GR", "2"));
+        erp002p01GetProductId();
+        erp002p01GetComboboxUnit();
 
         erp002p01BtnClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp002p01TxtIdProduct.setText("");
-                erp002p01TxtName.setText("");
-                erp002p01TxtWeight.setText("");
-
-                if (erp002p01CmbUnit.getItemCount() > 0) {
-                    erp002p01CmbUnit.setSelectedIndex(0);
-                }
-
-                erp002p01TxtPriceBuy.setText("");
-                erp002p01TxtPriceUnitDelivery.setText("");
+                erp002p01Clear();
             }
         });
         erp002p01BtnSave.addActionListener(new ActionListener() {
@@ -84,20 +69,32 @@ public class Erp002View extends JFrame{
                         "Confirmation", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    erp002p01SaveProduct();
+                    try {
+                        erp002p01SaveProduct();
+                    } catch (SQLException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
         erp002p01BtnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp002p01UpdateProduct();
+                try {
+                    erp002p01UpdateProduct();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         erp002p01BtnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp002p01DeleteProduct();
+                try {
+                    erp002p01DeleteProduct();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
         erp002p01TblProduct.addMouseListener(new MouseAdapter() {
@@ -123,6 +120,11 @@ public class Erp002View extends JFrame{
 
                 erp002p01TxtPriceBuy.setText((String) erp002p01TableModel.getValueAt(selectedRow, 4));
                 erp002p01TxtPriceUnitDelivery.setText((String) erp002p01TableModel.getValueAt(selectedRow, 5));
+                erp002p01TxtPriceUnitPickup.setText((String) erp002p01TableModel.getValueAt(selectedRow, 6));
+
+                erp002p01BtnSave.setEnabled(false);
+                erp002p01BtnUpdate.setEnabled(true);
+                erp002p01BtnDelete.setEnabled(true);
             }
         });
         erp002p01BtnFilter.addActionListener(new ActionListener() {
@@ -154,38 +156,17 @@ public class Erp002View extends JFrame{
             Object[] obj = new Object[7];
             obj[0] = product.getProductId();
             obj[1] = product.getName();
-            obj[2] = "-";
-            obj[3] = product.getWeight();
-            obj[4] = product.getUnit();
-            obj[5] = product.getPriceBuy();
-            obj[6] = product.getPriceUnitDelivery();
+            obj[2] = product.getWeight();
+            obj[3] = product.getUnit();
+            obj[4] = product.getPriceBuy();
+            obj[5] = product.getPriceUnitDelivery();
+            obj[6] = product.getPriceUnitPrice();
             erp002p01TableModel.addRow(obj);
         }
         erp002p01TblProduct.setModel(erp002p01TableModel);
     }
 
-    private void erp002p01SaveProduct() {
-        DtoParameter param = new DtoParameter();
-
-        Map<String, Object> searchMap = new HashMap<>();
-
-        searchMap.put("vPrdId", "RHMT3");
-        searchMap.put("vName", erp002p01TxtName.getText());
-        searchMap.put("xImg", "-");
-        searchMap.put("nWeight", erp002p01TxtWeight.getText());
-
-        DtoCombobox selectedSector = (DtoCombobox) erp002p01CmbUnit.getSelectedItem();
-        searchMap.put("vUnit", selectedSector.getDisplay());
-
-        searchMap.put("nprBuy", erp002p01TxtPriceBuy.getText());
-        searchMap.put("nprUntDel", erp002p01TxtPriceUnitDelivery.getText());
-
-        param.setSearch(searchMap);
-
-        Erp002Service.saveDataProduct(param);
-    }
-
-    private void erp002p01UpdateProduct() {
+    private void erp002p01SaveProduct() throws SQLException {
         DtoParameter param = new DtoParameter();
 
         Map<String, Object> searchMap = new HashMap<>();
@@ -193,20 +174,65 @@ public class Erp002View extends JFrame{
         searchMap.put("vPrdId", erp002p01TxtIdProduct.getText());
         searchMap.put("vName", erp002p01TxtName.getText());
         searchMap.put("xImg", "-");
-        searchMap.put("nWeight", erp002p01TxtWeight.getText());
+
+        int weight = Integer.parseInt(erp002p01TxtWeight.getText());
+        searchMap.put("nWeight", weight);
 
         DtoCombobox selectedSector = (DtoCombobox) erp002p01CmbUnit.getSelectedItem();
         searchMap.put("vUnit", selectedSector.getDisplay());
 
-        searchMap.put("nprBuy", erp002p01TxtPriceBuy.getText());
-        searchMap.put("nprUntDel", erp002p01TxtPriceUnitDelivery.getText());
+        int priceBuy = Integer.parseInt(erp002p01TxtPriceBuy.getText());
+        searchMap.put("nprBuy", priceBuy);
+
+        int priceUnitDelivery = Integer.parseInt(erp002p01TxtPriceUnitDelivery.getText());
+        searchMap.put("nprUntDel", priceUnitDelivery);
+
+        int priceUnitPickup = Integer.parseInt(erp002p01TxtPriceUnitPickup.getText());
+        searchMap.put("nprUntPic", priceUnitPickup);
+
+        param.setSearch(searchMap);
+
+        Erp002Service.saveDataProduct(param);
+
+        erp002p01Search();
+
+        erp002p01Clear();
+    }
+
+    private void erp002p01UpdateProduct() throws SQLException {
+        DtoParameter param = new DtoParameter();
+
+        Map<String, Object> searchMap = new HashMap<>();
+
+        searchMap.put("vPrdId", erp002p01TxtIdProduct.getText());
+        searchMap.put("vName", erp002p01TxtName.getText());
+        searchMap.put("xImg", "-");
+
+        int weight = Integer.parseInt(erp002p01TxtWeight.getText());
+        searchMap.put("nWeight", weight);
+
+        DtoCombobox selectedSector = (DtoCombobox) erp002p01CmbUnit.getSelectedItem();
+        searchMap.put("vUnit", selectedSector.getDisplay());
+
+        int priceBuy = Integer.parseInt(erp002p01TxtPriceBuy.getText());
+        searchMap.put("nprBuy", priceBuy);
+
+        int priceUnitDelivery = Integer.parseInt(erp002p01TxtPriceUnitDelivery.getText());
+        searchMap.put("nprUntDel", priceUnitDelivery);
+
+        int priceUnitPickup = Integer.parseInt(erp002p01TxtPriceUnitPickup.getText());
+        searchMap.put("nprUntPic", priceUnitPickup);
 
         param.setSearch(searchMap);
 
         Erp002Service.updateDataProduct(param);
+
+        erp002p01Search();
+
+        erp002p01Clear();
     }
 
-    private void erp002p01DeleteProduct() {
+    private void erp002p01DeleteProduct() throws SQLException {
         DtoParameter param = new DtoParameter();
 
         Map<String, Object> searchMap = new HashMap<>();
@@ -216,6 +242,10 @@ public class Erp002View extends JFrame{
         param.setSearch(searchMap);
 
         Erp002Service.deleteDataProduct(param);
+
+        erp002p01Search();
+
+        erp002p01Clear();
     }
 
     private void erp002p01Search() throws SQLException {
@@ -237,11 +267,11 @@ public class Erp002View extends JFrame{
             Object[] obj = new Object[7];
             obj[0] = product.getProductId();
             obj[1] = product.getName();
-            obj[2] = "-";
-            obj[3] = product.getWeight();
-            obj[4] = product.getUnit();
-            obj[5] = product.getPriceBuy();
-            obj[6] = product.getPriceUnitDelivery();
+            obj[2] = product.getWeight();
+            obj[3] = product.getUnit();
+            obj[4] = product.getPriceBuy();
+            obj[5] = product.getPriceUnitDelivery();
+            obj[6] = product.getPriceUnitPrice();
             erp002p01TableModel.addRow(obj);
         }
         erp002p01TblProduct.setModel(erp002p01TableModel);
@@ -249,11 +279,52 @@ public class Erp002View extends JFrame{
 
     private void erp002AddColumn() {
         erp002p01TableModel = new DefaultTableModel();
-        erp002p01TableModel.addColumn("Product ID");
-        erp002p01TableModel.addColumn("Name");
+        erp002p01TableModel.addColumn("ID Product");
+        erp002p01TableModel.addColumn("Nama");
         erp002p01TableModel.addColumn("Berat Bersih");
         erp002p01TableModel.addColumn("Satuan");
         erp002p01TableModel.addColumn("Harga Beli");
         erp002p01TableModel.addColumn("Harga Satuan Antar");
+        erp002p01TableModel.addColumn("Harga Satuan Jemput");
+    }
+
+    private void erp002p01Clear() {
+        erp002p01TxtIdProduct.setText("");
+        erp002p01TxtName.setText("");
+        erp002p01TxtWeight.setText("");
+        erp002p01CmbUnit.setSelectedIndex(0);
+        erp002p01TxtPriceBuy.setText("");
+        erp002p01TxtPriceUnitDelivery.setText("");
+        erp002p01TxtPriceUnitPickup.setText("");
+
+        try {
+            erp002p01GetProductId();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        erp002p01BtnSave.setEnabled(true);
+        erp002p01BtnUpdate.setEnabled(false);
+        erp002p01BtnDelete.setEnabled(false);
+    }
+
+    private void erp002Default() {
+        erp002p01BtnUpdate.setEnabled(false);
+        erp002p01BtnDelete.setEnabled(false);
+    }
+
+    private void erp002p01GetProductId() throws SQLException {
+        DtoResponse response = Erp002Service.getLastProductId(new DtoParameter());
+        String lastId = (String) response.getData().get(0);
+        erp002p01TxtIdProduct.setText(lastId);
+    }
+
+    private void erp002p01GetComboboxUnit() throws SQLException {
+        DtoResponse response = Erp002Service.getComboboxUnit(new DtoParameter());
+        List<DtoCombobox> comboboxUnitList = response.getData();
+        for (int i = 0; i < comboboxUnitList.size(); i++) {
+            DtoCombobox comboboxSector = comboboxUnitList.get(i);
+            erp002p01CmbUnit.addItem(new DtoCombobox(comboboxSector.getValue(), comboboxSector.getDisplay(), comboboxSector.getHelper()));
+        }
     }
 }

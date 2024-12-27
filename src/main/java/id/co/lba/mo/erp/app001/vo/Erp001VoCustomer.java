@@ -6,8 +6,9 @@ public class Erp001VoCustomer {
     private String email;
     private String website;
     private String sector;
-    private String beginEffective;
-    private String endEffective;
+    private String phone1;
+    private String phone2;
+    private String status;
 
     public String getCustomerId() {
         return customerId;
@@ -49,19 +50,27 @@ public class Erp001VoCustomer {
         this.sector = sector;
     }
 
-    public String getBeginEffective() {
-        return beginEffective;
+    public String getPhone1() {
+        return phone1;
     }
 
-    public void setBeginEffective(String beginEffective) {
-        this.beginEffective = beginEffective;
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
     }
 
-    public String getEndEffective() {
-        return endEffective;
+    public String getPhone2() {
+        return phone2;
     }
 
-    public void setEndEffective(String endEffective) {
-        this.endEffective = endEffective;
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

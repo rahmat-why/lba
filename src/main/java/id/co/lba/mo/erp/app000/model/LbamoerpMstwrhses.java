@@ -32,6 +32,9 @@ public class LbamoerpMstwrhses {
     @Column(name = "DMODI")
     private LocalDateTime dModi;
 
+    @Column(name = "VSTATUS")
+    private String vStatus;
+
     public String getvWrhsid() {
         return vWrhsid;
     }
@@ -94,5 +97,13 @@ public class LbamoerpMstwrhses {
 
     public void setdModi(LocalDateTime dModi) {
         this.dModi = dModi;
+    }
+
+    public String getvStatus() {
+        return vStatus;
+    }
+
+    public void setvStatus(String vStatus) {
+        this.vStatus = vStatus;
     }
 }
