@@ -33,7 +33,7 @@ public class Erp003View extends JFrame {
     private JButton erp003p01BtnUpdate;
     private JButton erp003p01BtnSave;
     private JButton erp003p01BtnClear;
-    private JPanel erp003p01Panel;
+    public JPanel erp003p01Panel;
     private DefaultTableModel erp003p01TableModel;
 
     public static void main(String[] args) {
@@ -120,11 +120,7 @@ public class Erp003View extends JFrame {
     }
 
     private void erp003Initialize() {
-        add(this.erp003p01Panel);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
+
     }
 
     private void erp003AddColumn() {

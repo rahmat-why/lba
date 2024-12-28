@@ -30,7 +30,7 @@ public class Erp002View extends JFrame{
     private JButton erp002p01BtnUpdate;
     private JButton erp002p01BtnSave;
     private JButton erp002p01BtnClear;
-    private JPanel erp002p01Panel;
+    public JPanel erp002p01Panel;
     private JComboBox erp002p01CmbUnit;
     private JTextField erp002p01TxtPriceBuy;
     private JTextField erp002p01TxtPriceUnitDelivery;
@@ -140,11 +140,7 @@ public class Erp002View extends JFrame{
     }
 
     private void erp002Initialize() {
-        add(this.erp002p01Panel);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
+
     }
 
     private void erp002p01GetProduct() throws SQLException {

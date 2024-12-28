@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="id.co.lba.mo.erp.app000.view.Erp000View">
+  <grid id="27dc6" binding="erp000p01Panel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
+    <constraints>
+      <xy x="20" y="20" width="500" height="660"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="1aebb" layout-manager="GridLayoutManager" row-count="20" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
+        <constraints>
+          <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-1"/>
+        </properties>
+        <border type="bevel-raised"/>
+        <children>
+          <vspacer id="edf06">
+            <constraints>
+              <grid row="19" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+            </constraints>
+          </vspacer>
+          <component id="ab1ed" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="16" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="92f94" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="17" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="9c0b8" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="1d731" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="c1fea" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="3ce21" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="9291b" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="a224f" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="ba73f" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="5cd4d" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="12" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <orientation value="1"/>
+            </properties>
+          </component>
+          <component id="1e2b8" class="javax.swing.JToolBar$Separator">
+            <constraints>
+              <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="cfd38" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-16777216"/>
+              <text value="Maintain"/>
+            </properties>
+          </component>
+          <component id="392e" class="javax.swing.JButton" binding="erp000BtnMenu1">
+            <constraints>
+              <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Customer"/>
+            </properties>
+          </component>
+          <component id="5ef27" class="javax.swing.JButton" binding="erp000BtnMenu2">
+            <constraints>
+              <grid row="10" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Product"/>
+            </properties>
+          </component>
+          <component id="a31f0" class="javax.swing.JButton" binding="erp000BtnMenu3">
+            <constraints>
+              <grid row="11" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Warehouse"/>
+            </properties>
+          </component>
+          <component id="640c8" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="13" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-16777216"/>
+              <text value="Transaction"/>
+            </properties>
+          </component>
+          <component id="e2ac5" class="javax.swing.JButton" binding="erp000BtnMenu5">
+            <constraints>
+              <grid row="15" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Sales"/>
+            </properties>
+          </component>
+          <component id="c2b10" class="javax.swing.JButton" binding="erp000BtnMenu4">
+            <constraints>
+              <grid row="14" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Inventory"/>
+            </properties>
+          </component>
+          <component id="3cde9" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="5" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <foreground color="-16777216"/>
+              <text value="LIJORA BERKAT ABADI"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <hspacer id="7ea48">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </hspacer>
+      <grid id="b884c" binding="erp000p02Panel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <background color="-16734469"/>
+        </properties>
+        <border type="none"/>
+        <children/>
+      </grid>
+    </children>
+  </grid>
+</form>

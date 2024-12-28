@@ -1,7 +1,7 @@
 package id.co.lba.mo.erp.app004.vo;
 
-public class Erp004VoStockProduct {
-    private String stockProductId;
+public class Erp004VoRestock {
+    private String restockId;
     private String productId;
     private String productName;
     private String warehouseId;
@@ -11,9 +11,14 @@ public class Erp004VoStockProduct {
     private String paymentDate;
     private String paymentStatus;
     private String price;
+    private String restockDate;
 
-    public String getStockProductId() {
-        return stockProductId;
+    public String getRestockId() {
+        return restockId;
+    }
+
+    public void setRestockId(String restockId) {
+        this.restockId = restockId;
     }
 
     public String getProductId() {
@@ -30,10 +35,6 @@ public class Erp004VoStockProduct {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public void setStockProductId(String stockProductId) {
-        this.stockProductId = stockProductId;
     }
 
     public String getWarehouseId() {
@@ -90,5 +91,13 @@ public class Erp004VoStockProduct {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getRestockDate() {
+        return restockDate;
+    }
+
+    public void setRestockDate(String restockDate) {
+        this.restockDate = restockDate;
     }
 }

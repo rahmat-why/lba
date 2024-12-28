@@ -1,18 +1,18 @@
 package id.co.lba.mo.erp.app000.model;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
-@Table(name = "LBAMOERP_TXNSTCKPRDS")
-public class LbamoerpTxnstckprds {
+@Table(name = "LBAMOERP_TXNRSTCKS")
+public class LbamoerpTxnrstcks {
 
     @Id
-    @Column(name = "VSTCPRDID")
-    private String vStcprdId;
+    @Column(name = "VRSTCKID")
+    private String vRstckId;
 
     @Column(name = "VPRDID")
     private String vPrdId;
@@ -23,8 +23,8 @@ public class LbamoerpTxnstckprds {
     @Column(name = "NQTY")
     private Integer nQty;
 
-    @Column(name = "NTPYMNTS")
-    private Integer nTpyments;
+    @Column(name = "NTPYMNT")
+    private Integer nTpyment;
 
     @Column(name = "NPRICE")
     private Integer nPrice;
@@ -47,12 +47,15 @@ public class LbamoerpTxnstckprds {
     @Column(name = "DMODI")
     private LocalDateTime dModi;
 
-    public String getvStcprdId() {
-        return vStcprdId;
+    @Column(name = "DRSTCKDT")
+    private LocalDate dRestockDate;
+
+    public String getvRstckId() {
+        return vRstckId;
     }
 
-    public void setvStcprdId(String vStcprdId) {
-        this.vStcprdId = vStcprdId;
+    public void setvRstckId(String vRstckId) {
+        this.vRstckId = vRstckId;
     }
 
     public String getvPrdId() {
@@ -79,12 +82,12 @@ public class LbamoerpTxnstckprds {
         this.nQty = nQty;
     }
 
-    public Integer getnTpyments() {
-        return nTpyments;
+    public Integer getnTpyment() {
+        return nTpyment;
     }
 
-    public void setnTpyments(Integer nTpyments) {
-        this.nTpyments = nTpyments;
+    public void setnTpyment(Integer nTpyment) {
+        this.nTpyment = nTpyment;
     }
 
     public LocalDate getdPaymentDate() {
@@ -141,5 +144,13 @@ public class LbamoerpTxnstckprds {
 
     public void setdModi(LocalDateTime dModi) {
         this.dModi = dModi;
+    }
+
+    public LocalDate getdRestockDate() {
+        return dRestockDate;
+    }
+
+    public void setdRestockDate(LocalDate dRestockDate) {
+        this.dRestockDate = dRestockDate;
     }
 }

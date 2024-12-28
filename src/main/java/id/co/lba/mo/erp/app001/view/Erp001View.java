@@ -36,7 +36,7 @@ public class Erp001View extends JFrame{
     private JTextField erp001p01TxtEmail;
     private JTextField erp001p01TxtWebsite;
     private JTextField erp001p01TxtName;
-    private JPanel erp001p01Panel;
+    public JPanel erp001p01Panel;
     private JButton erp001p01BtnDelete;
     private JButton erp001p01BtnSave;
     private JButton erp001p01BtnClear;
@@ -147,11 +147,7 @@ public class Erp001View extends JFrame{
     }
 
     private void erp001Initialize() {
-        add(this.erp001p01Panel);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
+
     }
 
     private void erp001p01GetCustomer() throws SQLException {

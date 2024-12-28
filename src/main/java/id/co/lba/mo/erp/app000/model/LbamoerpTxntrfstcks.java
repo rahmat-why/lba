@@ -1,6 +1,8 @@
 package id.co.lba.mo.erp.app000.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,10 +14,10 @@ public class LbamoerpTxntrfstcks {
     private String vTrfstcId;
 
     @Column(name = "VPRDID")
-    private String vPrdid;
+    private String vPrdId;
 
-    @Column(name = "VWRHSID")
-    private String vWrhsId;
+    @Column(name = "VWRHSFROM")
+    private String vWrhsFrom;
 
     @Column(name = "NQTY")
     private Integer nQty;
@@ -38,6 +40,12 @@ public class LbamoerpTxntrfstcks {
     @Column(name = "NTCOST")
     private Integer nTcost;
 
+    @Column(name = "VWRHSTO")
+    private String vWrhsTo;
+
+    @Column(name = "DTRFDT")
+    private LocalDate dTrfdt;
+
     public String getvTrfstcId() {
         return vTrfstcId;
     }
@@ -46,20 +54,20 @@ public class LbamoerpTxntrfstcks {
         this.vTrfstcId = vTrfstcId;
     }
 
-    public String getvPrdid() {
-        return vPrdid;
+    public String getvPrdId() {
+        return vPrdId;
     }
 
-    public void setvPrdid(String vPrdid) {
-        this.vPrdid = vPrdid;
+    public void setvPrdId(String vPrdId) {
+        this.vPrdId = vPrdId;
     }
 
-    public String getvWrhsId() {
-        return vWrhsId;
+    public String getvWrhsFrom() {
+        return vWrhsFrom;
     }
 
-    public void setvWrhsId(String vWrhsId) {
-        this.vWrhsId = vWrhsId;
+    public void setvWrhsFrom(String vWrhsFrom) {
+        this.vWrhsFrom = vWrhsFrom;
     }
 
     public Integer getnQty() {
@@ -116,5 +124,21 @@ public class LbamoerpTxntrfstcks {
 
     public void setnTcost(Integer nTcost) {
         this.nTcost = nTcost;
+    }
+
+    public String getvWrhsTo() {
+        return vWrhsTo;
+    }
+
+    public void setvWrhsTo(String vWrhsTo) {
+        this.vWrhsTo = vWrhsTo;
+    }
+
+    public LocalDate getdTrfdt() {
+        return dTrfdt;
+    }
+
+    public void setdTrfdt(LocalDate dTrfdt) {
+        this.dTrfdt = dTrfdt;
     }
 }

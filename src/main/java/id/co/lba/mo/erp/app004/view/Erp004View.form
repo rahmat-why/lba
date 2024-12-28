@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="erp004p01Panel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="1076" height="1088"/>
+      <xy x="20" y="20" width="1076" height="1130"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -17,15 +17,229 @@
         <properties/>
         <border type="none"/>
         <children>
-          <grid id="61b1b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="97dbd" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Stock Product"/>
+              <tabbedpane title="Inventory"/>
             </constraints>
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="3bed3" binding="erp004p01PanelStockProduct" layout-manager="GridLayoutManager" row-count="39" column-count="35" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="6fa44" binding="erp004p01PanelInventory" layout-manager="GridLayoutManager" row-count="39" column-count="35" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <background color="-16734469"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <grid id="a431" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-16734469"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="fe367" layout-manager="BorderLayout" hgap="0" vgap="0">
+                    <constraints>
+                      <grid row="0" column="34" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-16734469"/>
+                    </properties>
+                    <border type="none"/>
+                    <children/>
+                  </grid>
+                  <grid id="f2354" layout-manager="GridLayoutManager" row-count="3" column-count="5" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="9" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="bevel-raised"/>
+                    <children>
+                      <component id="b7bd1" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Search"/>
+                        </properties>
+                      </component>
+                      <component id="8bc37" class="javax.swing.JButton" binding="erp004p03BtnFilter">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Filter"/>
+                        </properties>
+                      </component>
+                      <component id="4e6a5" class="javax.swing.JTextField" binding="erp004p03Search">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <hspacer id="ca284">
+                        <constraints>
+                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                      <hspacer id="788a">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                      <hspacer id="42c64">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                      <hspacer id="51429">
+                        <constraints>
+                          <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </hspacer>
+                      <vspacer id="51f6d">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </vspacer>
+                    </children>
+                  </grid>
+                  <grid id="1aa9f" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="1" column="12" row-span="1" col-span="22" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="bevel-raised"/>
+                    <children>
+                      <component id="3a1c5" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="ID Inventory"/>
+                        </properties>
+                      </component>
+                      <vspacer id="f9bc4">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                      </vspacer>
+                      <component id="fdf3e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Product"/>
+                        </properties>
+                      </component>
+                      <component id="1615f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Warehouse"/>
+                        </properties>
+                      </component>
+                      <component id="2793" class="javax.swing.JComboBox" binding="erp004p03CmbProduct">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="6b4e5" class="javax.swing.JComboBox" binding="erp004p03CmbWarehouse">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <model/>
+                        </properties>
+                      </component>
+                      <component id="8d176" class="javax.swing.JTextField" binding="erp004p03TxtInventoryId">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <editable value="false"/>
+                        </properties>
+                      </component>
+                      <component id="598c9" class="javax.swing.JTextField" binding="erp004p03TxtTotalStock">
+                        <constraints>
+                          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <editable value="false"/>
+                          <text value="(Isi saat restock)"/>
+                        </properties>
+                      </component>
+                      <component id="82c9f" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Total Stock"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                  <scrollpane id="43176">
+                    <constraints>
+                      <grid row="3" column="1" row-span="19" col-span="33" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <toolTipText value=""/>
+                    </properties>
+                    <border type="line"/>
+                    <children>
+                      <component id="9af6" class="javax.swing.JTable" binding="erp004p03TblInventory">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <component id="6a3a1" class="javax.swing.JButton" binding="erp004p03BtnSaveInventory">
+                    <constraints>
+                      <grid row="2" column="33" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <background color="-14146253"/>
+                      <font name="Century Gothic" size="12" style="1"/>
+                      <foreground color="-2162708"/>
+                      <text value="Save Inventory"/>
+                    </properties>
+                  </component>
+                  <hspacer id="a27e5">
+                    <constraints>
+                      <grid row="2" column="28" row-span="1" col-span="2" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                  </hspacer>
+                </children>
+              </grid>
+            </children>
+          </grid>
+          <grid id="61b1b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <tabbedpane title="Restock"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="3bed3" binding="erp004p01PanelRestock" layout-manager="GridLayoutManager" row-count="39" column-count="35" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -85,7 +299,9 @@
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <text value=""/>
+                        </properties>
                       </component>
                       <hspacer id="c0a28">
                         <constraints>
@@ -114,7 +330,7 @@
                       </vspacer>
                     </children>
                   </grid>
-                  <grid id="c95a5" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="c95a5" layout-manager="GridLayoutManager" row-count="8" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="12" row-span="1" col-span="22" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -132,7 +348,7 @@
                       </component>
                       <vspacer id="99670">
                         <constraints>
-                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                         </constraints>
                       </vspacer>
                       <component id="5182a" class="javax.swing.JLabel">
@@ -197,7 +413,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="f6d20" class="javax.swing.JTextField" binding="erp004p01TxtStockProductId">
+                      <component id="f6d20" class="javax.swing.JTextField" binding="erp004p01TxtRestockId">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -223,6 +439,22 @@
                           <text value="Price"/>
                         </properties>
                       </component>
+                      <component id="9ee07" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Restock Date"/>
+                        </properties>
+                      </component>
+                      <grid id="dc55c" binding="erp004p01JdtRestockDate" layout-manager="BorderLayout" hgap="0" vgap="0">
+                        <constraints>
+                          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
                     </children>
                   </grid>
                   <scrollpane id="aeaf8">
@@ -234,13 +466,13 @@
                     </properties>
                     <border type="line"/>
                     <children>
-                      <component id="7c58a" class="javax.swing.JTable" binding="erp004p01TblStock">
+                      <component id="7c58a" class="javax.swing.JTable" binding="erp004p01TblRestock">
                         <constraints/>
                         <properties/>
                       </component>
                     </children>
                   </scrollpane>
-                  <component id="ddf74" class="javax.swing.JButton" binding="erp004p01BtnSaveStock">
+                  <component id="ddf74" class="javax.swing.JButton" binding="erp004p01BtnRestock">
                     <constraints>
                       <grid row="2" column="33" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -248,7 +480,7 @@
                       <background color="-14146253"/>
                       <font name="Century Gothic" size="12" style="1"/>
                       <foreground color="-2162708"/>
-                      <text value="Save Stock"/>
+                      <text value="Restock"/>
                     </properties>
                   </component>
                   <hspacer id="7bc50">
@@ -314,7 +546,7 @@
                           <text value="Search"/>
                         </properties>
                       </component>
-                      <component id="2c61" class="javax.swing.JButton">
+                      <component id="2c61" class="javax.swing.JButton" binding="erp004p02BtnFilter">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -322,7 +554,7 @@
                           <text value="Filter"/>
                         </properties>
                       </component>
-                      <component id="44848" class="javax.swing.JTextField">
+                      <component id="44848" class="javax.swing.JTextField" binding="erp004p02Search">
                         <constraints>
                           <grid row="0" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -357,7 +589,7 @@
                       </vspacer>
                     </children>
                   </grid>
-                  <grid id="affea" layout-manager="GridLayoutManager" row-count="5" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="affea" layout-manager="GridLayoutManager" row-count="8" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="1" column="12" row-span="1" col-span="22" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -370,20 +602,15 @@
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="ID Stock"/>
+                          <text value="ID Transfer"/>
                         </properties>
                       </component>
-                      <vspacer id="3bd8a">
-                        <constraints>
-                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                      </vspacer>
                       <component id="3af04" class="javax.swing.JLabel">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Warehouse"/>
+                          <text value="Product"/>
                         </properties>
                       </component>
                       <component id="2e69b" class="javax.swing.JLabel">
@@ -391,20 +618,12 @@
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Quantity"/>
+                          <text value="Warehouse Asal"/>
                         </properties>
                       </component>
-                      <component id="5d101" class="javax.swing.JLabel">
+                      <component id="5d5b4" class="javax.swing.JTextField" binding="erp004p02TxtTransferStockId">
                         <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                        </constraints>
-                        <properties>
-                          <text value="Total Payment"/>
-                        </properties>
-                      </component>
-                      <component id="5d5b4" class="javax.swing.JTextField">
-                        <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                          <grid row="0" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
@@ -412,33 +631,137 @@
                           <editable value="false"/>
                           <enabled value="false"/>
                           <foreground color="-262152"/>
-                          <text value="Otomatis"/>
+                          <text value=""/>
                         </properties>
                       </component>
-                      <component id="5d7f9" class="javax.swing.JTextField">
+                      <component id="b21da" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
-                        <properties/>
+                        <properties>
+                          <text value="Quantity Asal"/>
+                        </properties>
                       </component>
-                      <component id="cbbcf" class="javax.swing.JTextField">
-                        <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="802bb" class="javax.swing.JTextField">
+                      <component id="35a1a" class="javax.swing.JTextField" binding="erp004p02QuantityFrom">
                         <constraints>
                           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
                           </grid>
                         </constraints>
+                        <properties>
+                          <editable value="false"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="25b72" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Total Cost"/>
+                        </properties>
+                      </component>
+                      <component id="68431" class="javax.swing.JTextField" binding="erp004p02TotalCost">
+                        <constraints>
+                          <grid row="5" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
                         <properties/>
                       </component>
+                      <component id="c0e85" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Warehouse Tujuan"/>
+                        </properties>
+                      </component>
+                      <component id="7ec32" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="3" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Quantity Tujuan"/>
+                        </properties>
+                      </component>
+                      <component id="88c5b" class="javax.swing.JTextField" binding="erp004p02QuantityTo">
+                        <constraints>
+                          <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties>
+                          <editable value="false"/>
+                          <text value=""/>
+                        </properties>
+                      </component>
+                      <component id="737ff" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Quantity Transfer"/>
+                        </properties>
+                      </component>
+                      <component id="1295" class="javax.swing.JTextField" binding="erp004p02QuantityTransfer">
+                        <constraints>
+                          <grid row="4" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="e4cfa" class="javax.swing.JComboBox" binding="erp004p02CmbProduct">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="b3476" class="javax.swing.JComboBox" binding="erp004p02CmbWarehouseFrom">
+                        <constraints>
+                          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="70b82" class="javax.swing.JComboBox" binding="erp004p02CmbWarehouseTo">
+                        <constraints>
+                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="29feb" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Description"/>
+                        </properties>
+                      </component>
+                      <component id="58f4" class="javax.swing.JTextField" binding="erp004p02Description">
+                        <constraints>
+                          <grid row="6" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="7437e" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Transfer Date"/>
+                        </properties>
+                      </component>
+                      <grid id="a2c8" binding="erp004p02JdtTransferDate" layout-manager="BorderLayout" hgap="0" vgap="0">
+                        <constraints>
+                          <grid row="7" column="1" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children/>
+                      </grid>
                     </children>
                   </grid>
                   <scrollpane id="8602e">
@@ -450,13 +773,13 @@
                     </properties>
                     <border type="line"/>
                     <children>
-                      <component id="8b796" class="javax.swing.JTable">
+                      <component id="8b796" class="javax.swing.JTable" binding="erp004p02TblTransferStock">
                         <constraints/>
                         <properties/>
                       </component>
                     </children>
                   </scrollpane>
-                  <component id="a145b" class="javax.swing.JButton">
+                  <component id="a145b" class="javax.swing.JButton" binding="erp004p02BtnSaveTransferStock">
                     <constraints>
                       <grid row="2" column="33" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -464,7 +787,7 @@
                       <background color="-14146253"/>
                       <font name="Century Gothic" size="12" style="1"/>
                       <foreground color="-2162708"/>
-                      <text value="Save Stock"/>
+                      <text value="Transfer Stock"/>
                     </properties>
                   </component>
                   <hspacer id="988cf">

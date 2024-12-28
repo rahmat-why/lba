@@ -15,6 +15,8 @@
         <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstcusts"/>
         <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstproducts"/>
         <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstwrhses"/>
-        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpTxnstckprds"/>
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpTxnrstcks"/>
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpTxntrfstcks"/>
+        <mapping class="id.co.lba.mo.erp.app000.model.LbamoerpMstinvtrs"/>
     </session-factory>
 </hibernate-configuration>
