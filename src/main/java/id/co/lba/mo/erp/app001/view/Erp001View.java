@@ -49,8 +49,9 @@ public class Erp001View extends JFrame{
             try {
                 Erp001View window = new Erp001View();
                 window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                throw new RuntimeException(ex);
             }
         });
     }
@@ -66,13 +67,19 @@ public class Erp001View extends JFrame{
         erp001p01BtnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to save the customer?",
+                int validate = erp001Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to save this data?",
                 "Confirmation", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
                         erp001p01SaveCustomer();
                     } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                         throw new RuntimeException(ex);
                     }
                 }
@@ -117,20 +124,37 @@ public class Erp001View extends JFrame{
         erp001p01BtnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp001p01DeleteCustomer();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to delete this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp001p01DeleteCustomer();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
         erp001p01BtnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp001p01UpdateCustomer();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int validate = erp001Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to update this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp001p01UpdateCustomer();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -140,6 +164,7 @@ public class Erp001View extends JFrame{
                 try {
                     erp001p01Search();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -187,7 +212,12 @@ public class Erp001View extends JFrame{
 
         param.setSearch(searchMap);
 
-        Erp001Service.saveDataCustomer(param);
+        DtoResponse response = Erp001Service.saveDataCustomer(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp001p01Search();
 
@@ -212,7 +242,12 @@ public class Erp001View extends JFrame{
 
         param.setSearch(searchMap);
 
-        Erp001Service.updateDataCustomer(param);
+        DtoResponse response = Erp001Service.updateDataCustomer(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp001p01Search();
 
@@ -228,7 +263,12 @@ public class Erp001View extends JFrame{
 
         param.setSearch(searchMap);
 
-        Erp001Service.deleteDataCustomer(param);
+        DtoResponse response = Erp001Service.deleteDataCustomer(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp001p01Search();
 
@@ -299,9 +339,18 @@ public class Erp001View extends JFrame{
         erp001p01TxtWebsite.setText("");
         erp001p01CmbSector.setSelectedIndex(0);
 
+        erp001p01TxtIdCustomer.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp001p01TxtName.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp001p01TxtPhone1.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp001p01TxtPhone2.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp001p01TxtEmail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp001p01TxtWebsite.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp001p01CmbSector.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
         try {
             erp001p01GetCustomerId();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             throw new RuntimeException(ex);
         }
 
@@ -313,5 +362,60 @@ public class Erp001View extends JFrame{
     private void erp001Default() {
         erp001p01BtnUpdate.setEnabled(false);
         erp001p01BtnDelete.setEnabled(false);
+    }
+
+    private int erp001Validate() {
+        int valid = 1;
+
+        if (erp001p01TxtIdCustomer.getText().isEmpty()) {
+            erp001p01TxtIdCustomer.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01TxtIdCustomer.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp001p01TxtName.getText().isEmpty()) {
+            erp001p01TxtName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01TxtName.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp001p01TxtPhone1.getText().isEmpty()) {
+            erp001p01TxtPhone1.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01TxtPhone1.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp001p01TxtPhone2.getText().isEmpty()) {
+            erp001p01TxtPhone2.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01TxtPhone2.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp001p01TxtEmail.getText().isEmpty()) {
+            erp001p01TxtEmail.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01TxtEmail.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp001p01TxtWebsite.getText().isEmpty()) {
+            erp001p01TxtWebsite.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01TxtWebsite.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp001p01CmbSector.getSelectedIndex() < 0) {
+            erp001p01CmbSector.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp001p01CmbSector.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        return valid;
     }
 }

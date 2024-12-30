@@ -41,8 +41,9 @@ public class Erp003View extends JFrame {
             try {
                 Erp003View window = new Erp003View();
                 window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                throw new RuntimeException(ex);
             }
         });
     }
@@ -62,30 +63,63 @@ public class Erp003View extends JFrame {
         erp003p01BtnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp003p01SaveWarehouse();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int validate = erp003Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to save this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp003p01SaveWarehouse();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
         erp003p01BtnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp003p01UpdateWarehouse();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int validate = erp003Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to update this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp003p01UpdateWarehouse();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
         erp003p01BtnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp003p01DeleteWarehouse();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int validate = erp003Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to delete this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp003p01DeleteWarehouse();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -113,6 +147,7 @@ public class Erp003View extends JFrame {
                 try {
                     erp003p01Search();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -160,7 +195,12 @@ public class Erp003View extends JFrame {
 
         param.setSearch(searchMap);
 
-        Erp003Service.saveDataWarehouse(param);
+        DtoResponse response = Erp003Service.saveDataWarehouse(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp003p01Search();
 
@@ -179,7 +219,12 @@ public class Erp003View extends JFrame {
 
         param.setSearch(searchMap);
 
-        Erp003Service.updateDataWarehouse(param);
+        DtoResponse response = Erp003Service.updateDataWarehouse(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp003p01Search();
 
@@ -191,7 +236,13 @@ public class Erp003View extends JFrame {
         Map<String, Object> searchMap = new HashMap<>();
         searchMap.put("vWrhsId", erp003p01TxtIdWarehouse.getText());
         param.setSearch(searchMap);
-        Erp003Service.deleteDataWarehouse(param);
+
+        DtoResponse response = Erp003Service.deleteDataWarehouse(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp003p01Search();
 
@@ -204,9 +255,15 @@ public class Erp003View extends JFrame {
         erp003p01TxtAddress.setText("");
         erp003p01TxtCapacity.setText("");
 
+        erp003p01TxtIdWarehouse.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp003p01TxtName.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp003p01TxtAddress.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp003p01TxtCapacity.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
         try {
             erp003p01GetWarehouseId();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             throw new RuntimeException(ex);
         }
 
@@ -250,5 +307,39 @@ public class Erp003View extends JFrame {
         DtoResponse response = Erp003Service.getLastWarehouseId(new DtoParameter());
         String lastId = (String) response.getData().get(0);
         erp003p01TxtIdWarehouse.setText(lastId);
+    }
+
+    private int erp003Validate() {
+        int valid = 1;
+
+        if (erp003p01TxtIdWarehouse.getText().isEmpty()) {
+            erp003p01TxtIdWarehouse.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp003p01TxtIdWarehouse.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp003p01TxtName.getText().isEmpty()) {
+            erp003p01TxtName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp003p01TxtName.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp003p01TxtAddress.getText().isEmpty()) {
+            erp003p01TxtAddress.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp003p01TxtAddress.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp003p01TxtCapacity.getText().isEmpty()) {
+            erp003p01TxtCapacity.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp003p01TxtCapacity.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        return valid;
     }
 }

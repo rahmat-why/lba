@@ -3,6 +3,7 @@ package id.co.lba.mo.erp.app004.service;
 import LBAJXLibrariesV1.dto.DtoParameter;
 import LBAJXLibrariesV1.dto.DtoResponse;
 import id.co.lba.Hibernate;
+import id.co.lba.mo.erp.app000.model.LbamoerpMstcusts;
 import id.co.lba.mo.erp.app000.model.LbamoerpMstinvtrs;
 import id.co.lba.mo.erp.app000.model.LbamoerpTxnrstcks;
 import id.co.lba.mo.erp.app000.model.LbamoerpTxntrfstcks;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +36,10 @@ public class Erp004Service {
             restock.setvPrdId((String) search.get("vPrdId"));
             restock.setvWrhsId((String) search.get("vWrhsId"));
             restock.setnPrice((Integer) search.get("vPrice"));
-            restock.setnQty((Integer) search.get("vQuantity"));
+
+            int quantity = (Integer) search.get("vQuantity");
+            restock.setnQty(quantity);
+
             restock.setnTpyment((Integer) search.get("vTotalPayment"));
             restock.setdPaymentDate((LocalDate) search.get("dPaymentDate"));
             restock.setvPaymentStatus((String) search.get("vPaymentStatus"));
@@ -42,6 +47,14 @@ public class Erp004Service {
             restock.setvCrea("NEW");
             restock.setdCrea(LocalDateTime.now());
             session.save(restock);
+
+            String inventoryId = Erp004ObjectDao.getInventoryId(param);
+            LbamoerpMstinvtrs inventory = session.get(LbamoerpMstinvtrs.class, inventoryId);
+            if (inventory != null) {
+                inventory.setnStck(inventory.getnStck()+quantity);
+                session.update(inventory);
+            }
+
             transaction.commit();
             return new DtoResponse("200", null, "Data successfully saved");
         } catch (Exception e) {
@@ -89,17 +102,42 @@ public class Erp004Service {
             transferStock.setvPrdId((String) search.get("vProductId"));
             transferStock.setvWrhsFrom((String) search.get("vWarehouseFrom"));
             transferStock.setvWrhsTo((String) search.get("vWarehouseTo"));
-            transferStock.setnQty((Integer) search.get("nQuantity"));
+
+            int quantity = (Integer) search.get("nQuantity");
+            transferStock.setnQty(quantity);
+
             transferStock.setvDesc((String) search.get("vDescription"));
             transferStock.setnTcost((Integer) search.get("nTotalCost"));
             transferStock.setdTrfdt((LocalDate) search.get("dTransferDate"));
             transferStock.setvCrea("NEW");
             transferStock.setdCrea(LocalDateTime.now());
             session.save(transferStock);
+
+            search.put("vPrdId", search.get("vProductId"));
+            search.put("vWrhsId", search.get("vWarehouseFrom"));
+            param.setSearch(search);
+
+            String inventoryFromId = Erp004ObjectDao.getInventoryId(param);
+            LbamoerpMstinvtrs inventoryFrom = session.get(LbamoerpMstinvtrs.class, inventoryFromId);
+            if (inventoryFrom != null) {
+                inventoryFrom.setnStck(inventoryFrom.getnStck()-quantity);
+                session.update(inventoryFrom);
+            }
+
+            search.put("vPrdId", search.get("vProductId"));
+            search.put("vWrhsId", search.get("vWarehouseTo"));
+            param.setSearch(search);
+
+            String inventoryToId = Erp004ObjectDao.getInventoryId(param);
+            LbamoerpMstinvtrs inventoryTo = session.get(LbamoerpMstinvtrs.class, inventoryToId);
+            if (inventoryTo != null) {
+                inventoryTo.setnStck(inventoryTo.getnStck()+quantity);
+                session.update(inventoryTo);
+            }
+
             transaction.commit();
             return new DtoResponse("200", null, "Data successfully saved");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
@@ -123,6 +161,14 @@ public class Erp004Service {
         try (Session session = Hibernate.getInstance().getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             Map<String, Object> search = param.getSearch();
+
+            String inventoryId = Erp004ObjectDao.getInventoryId(param);
+            String warehouseName = (String) search.get("vWarehouseName");
+            String productName = (String) search.get("vProductName");
+            if(!inventoryId.isEmpty()) {
+                return new DtoResponse("500", null, "Inventory "+productName+" already exist in warehouse "+warehouseName+"!");
+            }
+
             LbamoerpMstinvtrs inventory = new LbamoerpMstinvtrs();
             inventory.setvInvtrId((String) search.get("vIvtId"));
             inventory.setvWrhsId((String) search.get("vWrhsId"));
@@ -134,7 +180,6 @@ public class Erp004Service {
             transaction.commit();
             return new DtoResponse("200", null, "Data successfully saved");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }

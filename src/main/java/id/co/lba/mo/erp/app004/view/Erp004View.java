@@ -42,10 +42,10 @@ public class Erp004View extends JFrame{
     private JComboBox erp004p01CmbProduct;
     private JTextField erp004p01TxtPrice;
     private JTextField erp004p02TxtTransferStockId;
-    private JTextField erp004p02QuantityFrom;
-    private JTextField erp004p02QuantityTo;
-    private JTextField erp004p02QuantityTransfer;
-    private JTextField erp004p02TotalCost;
+    private JTextField erp004p02TxtQuantityFrom;
+    private JTextField erp004p02TxtQuantityTo;
+    private JTextField erp004p02TxtQuantityTransfer;
+    private JTextField erp004p02TxtTotalCost;
     private JButton erp004p02BtnFilter;
     private JTextField erp004p02Search;
     private JButton erp004p02BtnSaveTransferStock;
@@ -53,7 +53,7 @@ public class Erp004View extends JFrame{
     private JComboBox erp004p02CmbProduct;
     private JComboBox erp004p02CmbWarehouseFrom;
     private JComboBox erp004p02CmbWarehouseTo;
-    private JTextField erp004p02Description;
+    private JTextField erp004p02TxtDescription;
     private JPanel erp004p01PanelInventory;
     private JComboBox erp004p03CmbWarehouse;
     private JComboBox erp004p03CmbProduct;
@@ -65,6 +65,8 @@ public class Erp004View extends JFrame{
     private JTextField erp004p03TxtInventoryId;
     private JPanel erp004p02JdtTransferDate;
     private JPanel erp004p01JdtRestockDate;
+    private JButton erp004p01BtnClear;
+    private JButton erp004p02BtnClear;
     JDateChooser erp004p02TransferDate = new JDateChooser();
     JDateChooser erp004p01RestockDate = new JDateChooser();
 
@@ -73,8 +75,9 @@ public class Erp004View extends JFrame{
             try {
                 Erp004View window = new Erp004View();
                 window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                throw new RuntimeException(ex);
             }
         });
     }
@@ -90,7 +93,17 @@ public class Erp004View extends JFrame{
         erp004p01BtnRestock.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp004p01SaveRestock();
+                int validate = erp004ValidateRestock();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to restock?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    erp004p01SaveRestock();
+                }
             }
         });
         erp004p01BtnFilter.addActionListener(new ActionListener() {
@@ -99,6 +112,7 @@ public class Erp004View extends JFrame{
                 try {
                     erp004p01Search();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -109,6 +123,7 @@ public class Erp004View extends JFrame{
                 try {
                     erp004p01GetRestockId();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -154,7 +169,17 @@ public class Erp004View extends JFrame{
         erp004p02BtnSaveTransferStock.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                erp004p02SaveTransferStock();
+                int validate = erp004ValidateTransferStock();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to transfer stock?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    erp004p02SaveTransferStock();
+                }
             }
         });
         erp004p02CmbWarehouseFrom.addActionListener(new ActionListener() {
@@ -175,6 +200,7 @@ public class Erp004View extends JFrame{
                 try {
                     erp004p02Search();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -195,10 +221,16 @@ public class Erp004View extends JFrame{
         erp004p03BtnSaveInventory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp004p03SaveInventory();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to save inventory?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp004p03SaveInventory();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -208,8 +240,21 @@ public class Erp004View extends JFrame{
                 try {
                     erp004p03Search();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
+            }
+        });
+        erp004p01BtnClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                erp004p01ClearRestock();
+            }
+        });
+        erp004p02BtnClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                erp004p01ClearTransferStock();
             }
         });
     }
@@ -299,13 +344,23 @@ public class Erp004View extends JFrame{
 
         searchMap.put("vPaymentStatus", "PAID");
         param.setSearch(searchMap);
-        Erp004Service.saveDataRestock(param);
+
+        DtoResponse response = Erp004Service.saveDataRestock(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
+
         erp004p01Clear();
         try {
             erp004p01Search();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            throw new RuntimeException(ex);
         }
+
+        erp004p01GetProductPrice();
     }
 
     private void erp004p01Clear() {
@@ -455,27 +510,34 @@ public class Erp004View extends JFrame{
         String selectedWarehouseToId = selectedWarehouseTo.getValue();
         searchMap.put("vWarehouseTo", selectedWarehouseToId);
 
-        int quantity = Integer.parseInt(erp004p02QuantityTransfer.getText());
+        int quantity = Integer.parseInt(erp004p02TxtQuantityTransfer.getText());
         searchMap.put("nQuantity", quantity);
 
-        int totalCost = Integer.parseInt(erp004p02TotalCost.getText());
+        int totalCost = Integer.parseInt(erp004p02TxtTotalCost.getText());
         searchMap.put("nTotalCost", totalCost);
 
-        searchMap.put("vDescription", erp004p02Description.getText());
+        searchMap.put("vDescription", erp004p02TxtDescription.getText());
 
         Date transferDate = erp004p02TransferDate.getDate();
         LocalDate localTransferDate = transferDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         searchMap.put("dTransferDate", localTransferDate);
 
         param.setSearch(searchMap);
-        Erp004Service.saveDataTransferStock(param);
+
+        DtoResponse response = Erp004Service.saveDataTransferStock(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp004p02Clear();
 
         try {
             erp004p02Search();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -488,12 +550,13 @@ public class Erp004View extends JFrame{
         try {
             erp004p02GetTransferStockId();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             throw new RuntimeException(ex);
         }
 
-        erp004p02QuantityTransfer.setText("");
-        erp004p02TotalCost.setText("");
-        erp004p02Description.setText("");
+        erp004p02TxtQuantityTransfer.setText("");
+        erp004p02TxtTotalCost.setText("");
+        erp004p02TxtDescription.setText("");
         erp004p02TransferDate.setDate(null);
 
         erp004p02GetTotalStockInventoryFrom();
@@ -522,8 +585,9 @@ public class Erp004View extends JFrame{
 
         try {
             int totalStockInventory = erp004p02GetTotalStockInventory(selectedProductId, selectedWarehouseId);
-            erp004p02QuantityFrom.setText(String.valueOf(totalStockInventory));
+            erp004p02TxtQuantityFrom.setText(String.valueOf(totalStockInventory));
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             throw new RuntimeException(ex);
         }
     }
@@ -537,8 +601,9 @@ public class Erp004View extends JFrame{
 
         try {
             int totalStockInventory = erp004p02GetTotalStockInventory(selectedProductId, selectedWarehouseId);
-            erp004p02QuantityTo.setText(String.valueOf(totalStockInventory));
+            erp004p02TxtQuantityTo.setText(String.valueOf(totalStockInventory));
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             throw new RuntimeException(ex);
         }
     }
@@ -601,16 +666,26 @@ public class Erp004View extends JFrame{
 
         DtoCombobox selectedWarehouse = (DtoCombobox) erp004p03CmbWarehouse.getSelectedItem();
         String selectedWarehouseId = selectedWarehouse.getValue();
+        String selectedWarehouseName = selectedWarehouse.getDisplay();
         searchMap.put("vWrhsId", selectedWarehouseId);
+        searchMap.put("vWarehouseName", selectedWarehouseName);
 
         DtoCombobox selectedProduct = (DtoCombobox) erp004p03CmbProduct.getSelectedItem();
         String selectedProductId = selectedProduct.getValue();
+        String selectedProductName = selectedProduct.getDisplay();
         searchMap.put("vPrdId", selectedProductId);
+        searchMap.put("vProductName", selectedProductName);
 
         searchMap.put("nTotalStock", 0);
 
         param.setSearch(searchMap);
-        Erp004Service.saveDataInventory(param);
+
+        DtoResponse response = Erp004Service.saveDataInventory(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp004p03Clear();
 
@@ -618,8 +693,9 @@ public class Erp004View extends JFrame{
 
         try {
             erp004p03Search();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            throw new RuntimeException(ex);
         }
     }
 
@@ -681,5 +757,160 @@ public class Erp004View extends JFrame{
         DtoResponse response = Erp004Service.getLastInventoryId(param);
         String lastId = (String) response.getData().get(0);
         erp004p03TxtInventoryId.setText(lastId);
+    }
+
+    private int erp004ValidateRestock() {
+        int valid = 1;
+
+        if (erp004p01TxtRestockId.getText().isEmpty()) {
+            erp004p01TxtRestockId.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p01TxtRestockId.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p01CmbProduct.getSelectedIndex() < 0) {
+            erp004p01CmbProduct.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p01CmbProduct.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p01CmbWarehouse.getSelectedIndex() < 0) {
+            erp004p01CmbWarehouse.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p01CmbWarehouse.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p01TxtPrice.getText().isEmpty()) {
+            erp004p01TxtPrice.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p01TxtPrice.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p01TxtQuantity.getText().isEmpty()) {
+            erp004p01TxtQuantity.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p01TxtQuantity.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p01RestockDate.getDate() == null) {
+            erp004p01JdtRestockDate.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p01JdtRestockDate.setBorder(UIManager.getLookAndFeelDefaults().getBorder("TextField.border"));
+        }
+
+        return valid;
+    }
+
+    private int erp004ValidateTransferStock() {
+        int valid = 1;
+
+        if (erp004p02TxtTransferStockId.getText().isEmpty()) {
+            erp004p02TxtTransferStockId.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02TxtTransferStockId.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p02CmbProduct.getSelectedIndex() < 0) {
+            erp004p02CmbProduct.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02CmbProduct.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p02CmbWarehouseFrom.getSelectedIndex() < 0) {
+            erp004p02CmbWarehouseFrom.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02CmbWarehouseFrom.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p02CmbWarehouseTo.getSelectedIndex() < 0) {
+            erp004p02CmbWarehouseTo.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02CmbWarehouseTo.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p02TxtTotalCost.getText().isEmpty()) {
+            erp004p02TxtTotalCost.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02TxtTotalCost.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p02TxtQuantityTransfer.getText().isEmpty()) {
+            erp004p02TxtQuantityTransfer.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02TxtQuantityTransfer.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp004p02TransferDate.getDate() == null) {
+            erp004p02JdtTransferDate.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp004p02JdtTransferDate.setBorder(UIManager.getLookAndFeelDefaults().getBorder("TextField.border"));
+        }
+
+        return valid;
+    }
+
+    private void erp004p01ClearRestock() {
+        erp004p01TxtRestockId.setText("");
+        erp004p01CmbProduct.setSelectedIndex(0);
+        erp004p01CmbWarehouse.setSelectedIndex(0);
+        erp004p01TxtPrice.setText("");
+        erp004p01TxtQuantity.setText("");
+        erp004p01TxtTotalPayment.setText("");
+        erp004p01RestockDate.setDate(null);
+
+        erp004p01TxtRestockId.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p01CmbProduct.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p01CmbWarehouse.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p01TxtPrice.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p01TxtQuantity.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p01TxtTotalPayment.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p01JdtRestockDate.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
+        try {
+            erp004p01GetRestockId();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private void erp004p01ClearTransferStock() {
+        erp004p02TxtTransferStockId.setText("");
+        erp004p02CmbProduct.setSelectedIndex(0);
+        erp004p02CmbWarehouseFrom.setSelectedIndex(0);
+        erp004p02CmbWarehouseTo.setSelectedIndex(0);
+        erp004p02TxtQuantityTransfer.setText("");
+        erp004p02TxtTotalCost.setText("");
+        erp004p02TxtDescription.setText("");
+        erp004p02TransferDate.setDate(null);
+
+        erp004p02TxtTransferStockId.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02CmbProduct.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02CmbWarehouseFrom.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02CmbWarehouseTo.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02TxtQuantityTransfer.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02TxtTotalCost.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02TxtDescription.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp004p02JdtTransferDate.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
+        try {
+            erp004p02GetTransferStockId();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+            throw new RuntimeException(ex);
+        }
     }
 }

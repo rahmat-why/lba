@@ -4,6 +4,7 @@ import id.co.lba.mo.erp.app001.view.Erp001View;
 import id.co.lba.mo.erp.app002.view.Erp002View;
 import id.co.lba.mo.erp.app003.view.Erp003View;
 import id.co.lba.mo.erp.app004.view.Erp004View;
+import id.co.lba.mo.erp.app005.view.Erp005View;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -96,7 +97,19 @@ public class Erp000View extends JFrame{
         erp000BtnMenu5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                erp000p02Panel.removeAll();
+                erp000p02Panel.revalidate();
+                erp000p02Panel.repaint();
+                Erp005View view = null;
+                try {
+                    view = new Erp005View();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+                view.erp005p01Panel.setVisible(true);
+                erp000p02Panel.revalidate();
+                erp000p02Panel.setLayout(new java.awt.BorderLayout());
+                erp000p02Panel.add(view.erp005p01Panel);
             }
         });
     }

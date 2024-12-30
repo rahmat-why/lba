@@ -31,13 +31,14 @@ public class Login extends JFrame{
                 param.setSearch(searchMap);
                 try {
                     DtoResponse response = Erp000Service.verifyUser(param);
-                    JOptionPane.showMessageDialog(null, response.getMessage(), "Informasi", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
                     if(response.getData().get(0) != null) {
                         dispose();
                         new Erp000View().setVisible(true);
                     }
                 } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Terjadi kesalahan: " + ex.getMessage(), "Kesalahan", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                    throw new RuntimeException(ex);
                 }
             }
         });

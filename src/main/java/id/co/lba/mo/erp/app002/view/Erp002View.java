@@ -42,8 +42,9 @@ public class Erp002View extends JFrame{
             try {
                 Erp002View window = new Erp002View();
                 window.frame.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                throw new RuntimeException(ex);
             }
         });
     }
@@ -65,13 +66,19 @@ public class Erp002View extends JFrame{
         erp002p01BtnSave.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to save the customer?",
+                int validate = erp002Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to save this data?",
                         "Confirmation", JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
                     try {
                         erp002p01SaveProduct();
                     } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                         throw new RuntimeException(ex);
                     }
                 }
@@ -80,20 +87,37 @@ public class Erp002View extends JFrame{
         erp002p01BtnUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp002p01UpdateProduct();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int validate = erp002Validate();
+                if(validate == 0) {
+                    return;
+                }
+
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to update this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp002p01UpdateProduct();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
         erp002p01BtnDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    erp002p01DeleteProduct();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
+                int confirm = JOptionPane.showConfirmDialog(null, "Are you sure to delete this data?",
+                        "Confirmation", JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    try {
+                        erp002p01DeleteProduct();
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
@@ -133,6 +157,7 @@ public class Erp002View extends JFrame{
                 try {
                     erp002p01Search();
                 } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                     throw new RuntimeException(ex);
                 }
             }
@@ -188,7 +213,12 @@ public class Erp002View extends JFrame{
 
         param.setSearch(searchMap);
 
-        Erp002Service.saveDataProduct(param);
+        DtoResponse response = Erp002Service.saveDataProduct(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp002p01Search();
 
@@ -221,7 +251,12 @@ public class Erp002View extends JFrame{
 
         param.setSearch(searchMap);
 
-        Erp002Service.updateDataProduct(param);
+        DtoResponse response = Erp002Service.updateDataProduct(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp002p01Search();
 
@@ -237,7 +272,12 @@ public class Erp002View extends JFrame{
 
         param.setSearch(searchMap);
 
-        Erp002Service.deleteDataProduct(param);
+        DtoResponse response = Erp002Service.deleteDataProduct(param);
+        JOptionPane.showMessageDialog(null, response.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+
+        if(!response.getStatus().equals("200")) {
+            return;
+        }
 
         erp002p01Search();
 
@@ -293,9 +333,18 @@ public class Erp002View extends JFrame{
         erp002p01TxtPriceUnitDelivery.setText("");
         erp002p01TxtPriceUnitPickup.setText("");
 
+        erp002p01TxtIdProduct.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp002p01TxtName.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp002p01TxtWeight.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp002p01CmbUnit.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp002p01TxtPriceBuy.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp002p01TxtPriceUnitDelivery.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        erp002p01TxtPriceUnitPickup.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+
         try {
             erp002p01GetProductId();
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
             throw new RuntimeException(ex);
         }
 
@@ -322,5 +371,60 @@ public class Erp002View extends JFrame{
             DtoCombobox comboboxSector = comboboxUnitList.get(i);
             erp002p01CmbUnit.addItem(new DtoCombobox(comboboxSector.getValue(), comboboxSector.getDisplay(), comboboxSector.getHelper()));
         }
+    }
+
+    private int erp002Validate() {
+        int valid = 1;
+
+        if (erp002p01TxtIdProduct.getText().isEmpty()) {
+            erp002p01TxtIdProduct.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01TxtIdProduct.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp002p01TxtName.getText().isEmpty()) {
+            erp002p01TxtName.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01TxtName.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp002p01TxtWeight.getText().isEmpty()) {
+            erp002p01TxtWeight.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01TxtWeight.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp002p01CmbUnit.getSelectedIndex() < 0) {
+            erp002p01CmbUnit.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01CmbUnit.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp002p01TxtPriceBuy.getText().isEmpty()) {
+            erp002p01TxtPriceBuy.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01TxtPriceBuy.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp002p01TxtPriceUnitDelivery.getText().isEmpty()) {
+            erp002p01TxtPriceUnitDelivery.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01TxtPriceUnitDelivery.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        if (erp002p01TxtPriceUnitPickup.getText().isEmpty()) {
+            erp002p01TxtPriceUnitPickup.setBorder(BorderFactory.createLineBorder(Color.RED));
+            valid = 0;
+        } else {
+            erp002p01TxtPriceUnitPickup.setBorder(UIManager.getLookAndFeel().getDefaults().getBorder("TextField.border"));
+        }
+
+        return valid;
     }
 }

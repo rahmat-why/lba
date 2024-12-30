@@ -79,8 +79,8 @@ public class Erp004Constant {
             "WHERE VTRFSTCID LIKE 'TSC/'+'@WAREHOUSEFROM/'+ CONVERT(VARCHAR, YEAR(GETDATE())) + '/' + FORMAT(GETDATE(), 'MM') + '/%' \n" +
             "ORDER BY VTRFSTCID DESC";
 
-    public final static String GET_TOTAL_STOCK =
-            "SELECT NTSTCK FROM LBAMOERP_MSTINVTRS \n" +
+    public final static String GET_INVENTORY_ID =
+            "SELECT VINVTRID, NTSTCK FROM LBAMOERP_MSTINVTRS \n" +
             "WHERE VPRDID = ? AND VWRHID = ?";
 
     public final static String GET_DATA_INVENTORY =

@@ -180,7 +180,7 @@ public class Erp004ObjectDao {
     }
 
     public static int getTotalStockInventory(DtoParameter dto) throws SQLException {
-        String query = Erp004Constant.GET_TOTAL_STOCK;
+        String query = Erp004Constant.GET_INVENTORY_ID;
         String productId = dto.getSearch() != null ? dto.getSearch().get("PRODUCTID").toString() : "";
         String warehouseId = dto.getSearch() != null ? dto.getSearch().get("WAREHOUSEID").toString() : "";
         int totalStock = 0;
@@ -248,5 +248,23 @@ public class Erp004ObjectDao {
             e.printStackTrace();
             throw e;
         }
+    }
+
+    public static String getInventoryId(DtoParameter dto) throws SQLException {
+        String query = Erp004Constant.GET_INVENTORY_ID;
+        String productId = dto.getSearch() != null ? dto.getSearch().get("vPrdId").toString() : "";
+        String warehouseId = dto.getSearch() != null ? dto.getSearch().get("vWrhsId").toString() : "";
+        String inventoryId = "";
+
+        try (PreparedStatement pstat = connection.conn.prepareStatement(query)) {
+            pstat.setString(1, productId);
+            pstat.setString(2, warehouseId);
+            try (ResultSet resultSet = pstat.executeQuery()) {
+                if (resultSet.next()) {
+                    inventoryId = resultSet.getString("VINVTRID");
+                }
+            }
+        }
+        return inventoryId;
     }
 }
