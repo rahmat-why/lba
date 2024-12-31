@@ -18,6 +18,7 @@ public class Erp005VoOrder {
     private String price;
     private String unit;
     private String totalPayment;
+    private String totalCost;
 
     public String getBjNumber() {
         return bjNumber;
@@ -153,5 +154,13 @@ public class Erp005VoOrder {
 
     public void setTotalPayment(String totalPayment) {
         this.totalPayment = totalPayment;
+    }
+
+    public String getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(String totalCost) {
+        this.totalCost = totalCost;
     }
 }
